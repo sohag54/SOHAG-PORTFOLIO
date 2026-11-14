@@ -37,12 +37,15 @@ export default function ProjectCylinder() {
   // Adjust cylinder radius responsively
   useEffect(() => {
     const updateRadius = () => {
-      if (window.innerWidth < 640) {
+      const w = window.innerWidth;
+      if (w < 640) {
         setRadius(275);
-      } else if (window.innerWidth < 1024) {
-        setRadius(375);
+      } else if (w < 768) {
+        setRadius(345);
+      } else if (w < 1024) {
+        setRadius(415); // Tablet (768px - 1023px): visually separated and balanced
       } else {
-        setRadius(455);
+        setRadius(455); // Desktop (1024px+): preserved exactly
       }
     };
     updateRadius();
@@ -131,12 +134,34 @@ export default function ProjectCylinder() {
   const handlePointerUp = () => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
+    // Brief cooldown so releasing drag doesn't cause instant hover-rotation
+    lastHoverRotateRef.current = Date.now() + 250;
 
     // Inertia + snap to nearest card slot
     const projected = rotationRef.current + velocityRef.current * 2.2;
     const snapped = Math.round(projected / angleStep) * angleStep;
     rotateToAngle(snapped, 0.9);
   };
+
+  // Smooth mouse hover focus handler
+  const handleCardHover = useCallback(
+    (index) => {
+      // Check if device supports hover
+      if (typeof window !== "undefined") {
+        const canHover = window.matchMedia("(hover: hover)").matches;
+        if (!canHover) return;
+      }
+      if (isDraggingRef.current) return;
+      if (index === activeIdx) return;
+
+      const diff = Math.abs((((index - activeIdx) % total) + total) % total);
+      const distance = Math.min(diff, total - diff);
+      if (distance <= 2) {
+        focusCard(index, true);
+      }
+    },
+    [activeIdx, total, focusCard]
+  );
 
   const activeCard = cards[activeIdx];
   const activeProject = projectMap[activeCard.projectId] || projectsData[0];
@@ -186,7 +211,7 @@ export default function ProjectCylinder() {
           {/* Rotating 3D Ring */}
           <div
             ref={ringRef}
-            className="relative w-[215px] sm:w-[295px] md:w-[345px] h-[230px] sm:h-[290px] md:h-[320px] flex items-center justify-center"
+            className="relative w-[215px] sm:w-[260px] md:w-[285px] lg:w-[345px] h-[230px] sm:h-[270px] md:h-[295px] lg:h-[320px] flex items-center justify-center"
             style={{ transformStyle: "preserve-3d" }}
           >
             {cards.map((card, i) => {
@@ -194,25 +219,17 @@ export default function ProjectCylinder() {
               const isFront = i === activeIdx;
               const proj = projectMap[card.projectId] || projectsData[0];
 
+              const diff = Math.abs((((i - activeIdx) % total) + total) % total);
+              const distance = Math.min(diff, total - diff);
+              const isFacingFront = distance <= 2;
+              const zIndex = isFront ? 30 : Math.max(1, 25 - distance * 5);
+
               return (
                 <div
                   key={card.id}
-                  onPointerEnter={(e) => {
-                    if (
-                      e.pointerType !== "mouse" ||
-                      isDraggingRef.current ||
-                      i === activeIdx
-                    ) {
-                      return;
-                    }
-                    const current = rotationRef.current;
-                    const targetBase = -i * angleStep;
-                    const relAngle = Math.abs(
-                      ((((targetBase - current) % 360) + 540) % 360) - 180
-                    );
-                    if (relAngle <= 95) {
-                      focusCard(i, true);
-                    }
+                  onMouseEnter={() => handleCardHover(i)}
+                  onMouseMove={() => {
+                    if (i !== activeIdx) handleCardHover(i);
                   }}
                   onClick={() => focusCard(i, false)}
                   role="button"
@@ -226,7 +243,9 @@ export default function ProjectCylinder() {
                   aria-label={`Preview ${proj.title}`}
                   style={{
                     transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                    backfaceVisibility: "visible",
+                    backfaceVisibility: "hidden",
+                    zIndex,
+                    pointerEvents: isFacingFront ? "auto" : "none",
                   }}
                   className={`group absolute inset-0 rounded-2xl border p-3.5 sm:p-4 flex flex-col justify-between transition-all duration-500 cursor-pointer overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-black ${
                     isFront
@@ -255,7 +274,7 @@ export default function ProjectCylinder() {
                       src={proj.image}
                       alt={`${proj.title} screenshot`}
                       fill
-                      sizes="(max-width: 640px) 220px, 345px"
+                      sizes="(max-width: 640px) 215px, (max-width: 1024px) 285px, 345px"
                       className="object-contain p-1 transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   </div>

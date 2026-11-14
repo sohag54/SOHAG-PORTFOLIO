@@ -10,7 +10,7 @@ const socialLinks = {
   instagram: "https://www.instagram.com/shoo_hag",
   linkedin: "https://www.linkedin.com/in/nosadsattarsohag/",
   github: "https://github.com/sohag54",
-  resume: "/resume.pdf",
+  resume: "/Sohag_Resume.pdf",
 };
 
 export const contactConfig = {

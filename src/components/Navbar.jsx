@@ -45,6 +45,8 @@ export default function Navbar() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const overlayRef = useRef(null);
+  const openButtonRef = useRef(null);
+  const closeButtonRef = useRef(null);
   const itemRefs = useRef([]);
   const textRefs = useRef([]);
   const previewRef = useRef(null);
@@ -61,14 +63,65 @@ export default function Navbar() {
     };
   }, []);
 
-  // Close overlay on ESC key press
+  // Reset hover and transforms cleanly when closing
+  const handleClose = useCallback((restoreFocus = false) => {
+    setHoveredIdx(null);
+    textRefs.current.forEach((el) => {
+      if (el) {
+        gsap.killTweensOf(el);
+        gsap.set(el, { x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0 });
+      }
+    });
+    setIsOpen(false);
+    if (restoreFocus) {
+      requestAnimationFrame(() => {
+        openButtonRef.current?.focus();
+      });
+    }
+  }, []);
+
+  // Move focus into dialog on open, handle ESC close, and trap Tab focus
   useEffect(() => {
+    if (!isOpen) return;
+
+    const focusFrame = requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
+
     const handleKeyDown = (e) => {
-      if (e.key === "Escape" && isOpen) setIsOpen(false);
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleClose(true);
+        return;
+      }
+
+      if (e.key === "Tab" && overlayRef.current) {
+        const focusable = Array.from(
+          overlayRef.current.querySelectorAll(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          )
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+    return () => {
+      cancelAnimationFrame(focusFrame);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, handleClose]);
 
   // Prevent background scroll when overlay is open
   useEffect(() => {
@@ -128,18 +181,6 @@ export default function Navbar() {
 
     return () => ctx.revert();
   }, [isOpen, prefersReducedMotion]);
-
-  // Reset hover and transforms cleanly when closing
-  const handleClose = useCallback(() => {
-    setHoveredIdx(null);
-    textRefs.current.forEach((el) => {
-      if (el) {
-        gsap.killTweensOf(el);
-        gsap.set(el, { x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0 });
-      }
-    });
-    setIsOpen(false);
-  }, []);
 
   // Magnetic & Subtle 3D Perspective mouse move handler
   const handleItemMouseMove = (e, idx) => {
@@ -205,11 +246,13 @@ export default function Navbar() {
 
           {/* Top-Right: Rounded outlined pill button labeled Menu + */}
           <button
+            ref={openButtonRef}
             onClick={() => setIsOpen(true)}
             type="button"
-            className="rounded-full border border-black px-6 py-2 text-xs font-bold tracking-wider uppercase text-black hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-1.5 cursor-pointer active:scale-95"
+            className="rounded-full border border-black px-6 py-2 text-xs font-bold tracking-wider uppercase text-black hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-1.5 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-[#f4f4f2]"
             aria-label="Open Navigation Menu"
             aria-expanded={isOpen}
+            aria-controls="site-navigation-dialog"
           >
             <span className="capitalize">Menu</span>
             <span className="text-xs font-semibold">+</span>
@@ -219,10 +262,13 @@ export default function Navbar() {
 
       {/* Pure Black Monochrome 3D Editorial Fullscreen Overlay */}
       <div
+        id="site-navigation-dialog"
         ref={overlayRef}
         role="dialog"
         aria-modal="true"
         aria-label="Site Navigation"
+        aria-hidden={!isOpen}
+        inert={!isOpen ? true : undefined}
         className={`fixed inset-0 z-50 bg-black text-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col justify-between overflow-y-auto ${
           isOpen
             ? "opacity-100 pointer-events-auto visible translate-y-0"
@@ -233,8 +279,8 @@ export default function Navbar() {
         <div className="max-w-[1440px] mx-auto w-full px-6 sm:px-10 lg:px-16 h-20 shrink-0 flex items-center justify-between border-b border-white/10">
           <Link
             href="/"
-            onClick={handleClose}
-            className="flex items-center gap-1.5 text-white font-extrabold tracking-widest text-lg sm:text-xl uppercase hover:opacity-75 transition-opacity"
+            onClick={() => handleClose(false)}
+            className="flex items-center gap-1.5 text-white font-extrabold tracking-widest text-lg sm:text-xl uppercase hover:opacity-75 transition-opacity rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
           >
             <span>SOHAG</span>
             <span className="text-white/40">•</span>
@@ -242,9 +288,10 @@ export default function Navbar() {
 
           {/* Outlined Pill Close Button */}
           <button
-            onClick={handleClose}
+            ref={closeButtonRef}
+            onClick={() => handleClose(true)}
             type="button"
-            className="rounded-full border border-white/30 px-6 py-2 text-xs font-bold tracking-wider uppercase text-white hover:border-white hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+            className="rounded-full border border-white/30 px-6 py-2 text-xs font-bold tracking-wider uppercase text-white hover:border-white hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             aria-label="Close Navigation Menu"
           >
             <span>Close</span>
@@ -275,8 +322,8 @@ export default function Navbar() {
                   >
                     <Link
                       href={item.href}
-                      onClick={handleClose}
-                      className="group flex items-center justify-between py-4 sm:py-5 outline-none"
+                      onClick={() => handleClose(false)}
+                      className="group flex items-center justify-between py-4 sm:py-5 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                     >
                       <div
                         ref={(el) => {

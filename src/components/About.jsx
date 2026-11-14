@@ -10,8 +10,18 @@ export default function About() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
+  const handleMouseEnter = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setIsHovered(true);
+  };
+
   const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
+    if (
+      !cardRef.current ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
     const rect = cardRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -71,7 +81,7 @@ export default function About() {
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         {/* Section Header Tag */}
         <div className="flex items-center gap-3 mb-12 sm:mb-16">
-          <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-white motion-safe:animate-pulse" />
           <span className="text-xs font-mono tracking-[0.35em] uppercase text-white/50">
             {aboutData.sectionNumber} {"//"} {aboutData.tag}
           </span>
@@ -116,7 +126,7 @@ export default function About() {
             <div
               ref={cardRef}
               onMouseMove={handleMouseMove}
-              onMouseEnter={() => setIsHovered(true)}
+              onMouseEnter={handleMouseEnter}
               onMouseLeave={() => {
                 setIsHovered(false);
                 setMousePos({ x: 0, y: 0 });

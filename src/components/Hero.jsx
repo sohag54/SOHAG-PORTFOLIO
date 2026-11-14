@@ -86,8 +86,8 @@ export default function Hero() {
             PORTFOLIO
           </h2>
 
-          {/* Portrait Cutout: Sized at ~42-45% desktop, positioned so hair starts in lower half of PORTFOLIO */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-[22%] sm:top-[20%] lg:top-[18%] z-20 pointer-events-none w-[270px] sm:w-[370px] md:w-[450px] lg:w-[520px] xl:w-[580px] max-w-[88vw] aspect-[1024/825] [mask-image:linear-gradient(to_bottom,black_65%,transparent_96%)]">
+          {/* Portrait Cutout: In flow on mobile/tablet to prevent overlap; exact centered overlay at lg+ */}
+          <div className="relative mx-auto -mt-[7%] sm:-mt-[6.5%] lg:mt-0 lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-[18%] z-20 pointer-events-none w-[270px] sm:w-[370px] md:w-[450px] lg:w-[520px] xl:w-[580px] max-w-[88vw] aspect-[1024/825] [mask-image:linear-gradient(to_bottom,black_65%,transparent_96%)]">
             <Image
               src="/sohag-cutout.png"
               alt="Sohag — Personal Developer Portrait"
@@ -101,12 +101,12 @@ export default function Hero() {
       </div>
 
       {/* Middle Grid: Left Scroll Guide & Right Developer Narrative */}
-      <div className="relative z-30 w-full max-w-[1440px] mx-auto my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pointer-events-auto pb-4">
+      <div className="relative z-30 w-full max-w-[1440px] mx-auto mt-6 sm:mt-8 lg:my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pointer-events-auto pb-4">
         {/* Left Side: Exact Reference Capsule Track + SCROLL DOWN Label + Circular Arrow */}
         <div className="hidden lg:flex lg:col-span-3 flex-col items-start space-y-3 pb-2">
           {/* Tall slender hollow capsule track from reference */}
           <div className="w-5 h-36 border-x border-b border-black rounded-b-full relative overflow-hidden flex justify-center py-2">
-            <div className="w-[1.5px] h-12 bg-black/60 animate-pulse rounded-full" />
+            <div className="w-[1.5px] h-12 bg-black/60 motion-safe:animate-pulse rounded-full" />
           </div>
 
           <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-black font-semibold">
@@ -161,7 +161,7 @@ export default function Hero() {
 
           {/* Mobile scroll indicator fallback */}
           <div className="flex lg:hidden items-center gap-2 pt-2 text-black/60">
-            <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
+            <ArrowDown className="w-3.5 h-3.5 motion-safe:animate-bounce" />
             <span className="text-[10px] font-mono tracking-widest uppercase">
               Scroll down to explore
             </span>

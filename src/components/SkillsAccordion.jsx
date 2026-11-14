@@ -52,7 +52,7 @@ export default function SkillsAccordion() {
                     type="button"
                     onClick={() => toggleItem(idx)}
                     aria-expanded={isOpen}
-                    className="w-full flex items-center justify-between gap-4 text-left cursor-pointer focus:outline-none"
+                    className="w-full flex items-center justify-between gap-4 text-left cursor-pointer rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4 focus-visible:ring-offset-[#f4f4f2]"
                   >
                     <div className="flex items-baseline gap-6 sm:gap-10">
                       <span className="text-xs font-mono text-black/40 shrink-0">

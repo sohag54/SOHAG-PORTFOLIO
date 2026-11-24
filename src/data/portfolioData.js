@@ -83,7 +83,7 @@ export const skillsAccordionData = [
     category: "React, Next.js & Tailwind CSS",
     status: "Used in Projects",
     description:
-      "Building interactive, responsive interfaces with React hooks, Next.js App Router architecture, and utility-first Tailwind CSS styling across Dev Stack, FitLog, and BookNook.",
+      "Building interactive, responsive interfaces with React hooks, Next.js App Router architecture, and utility-first Tailwind CSS styling across Dev Stack, BookNook, and MentorLagbe.",
     skills: ["React", "Next.js", "Tailwind CSS"],
   },
   {

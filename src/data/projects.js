@@ -1,5 +1,6 @@
 /**
  * Curated Projects Data — Exactly 4 Projects with Live Demo Links & Real Screenshots
+ * Order: 01. Dev Stack, 02. BookNook, 03. Dor Bazar, 04. MentorLagbe
  */
 export const projectsData = [
   {
@@ -29,34 +30,8 @@ export const projectsData = [
     pillBg: "#d9ddd5",
   },
   {
-    id: "fitlog",
-    number: "02",
-    title: "FitLog",
-    category: "Fitness Web App",
-    year: "2025",
-    status: "Live",
-    tagline: "Personal Workout & Daily Fitness Tracking Application",
-    description:
-      "A modern fitness tracking application designed to log daily workouts, record exercise routines, and monitor progressive fitness milestones.",
-    features: [
-      "Daily workout logging and exercise routine management",
-      "Progressive fitness milestone tracking interface",
-      "Type-safe React and TypeScript application structure",
-      "Clean, responsive UI built with Tailwind CSS and deployed on Vercel",
-    ],
-    highlights: [
-      { label: "Core Stack", value: "React & TypeScript" },
-      { label: "Focus Area", value: "Workout & Milestone Tracking" },
-    ],
-    technologies: ["React", "TypeScript", "Tailwind CSS"],
-    liveUrl: "https://assingment-6-nine.vercel.app/",
-    image: "/projects/fitlog.png.png",
-    accentBg: "#eceae4",
-    pillBg: "#dedad0",
-  },
-  {
     id: "booknook",
-    number: "03",
+    number: "02",
     title: "BookNook",
     category: "Full-Stack App",
     year: "2026",
@@ -82,7 +57,7 @@ export const projectsData = [
   },
   {
     id: "dor-bazar",
-    number: "04",
+    number: "03",
     title: "Dor Bazar",
     category: "Web Application",
     year: "2026",
@@ -106,6 +81,40 @@ export const projectsData = [
     accentBg: "#ebe7e1",
     pillBg: "#ddd7ce",
   },
+  {
+    id: "mentor-lagbe",
+    number: "04",
+    title: "MentorLagbe",
+    category: "Full-Stack Web Application",
+    year: "2026",
+    status: "Live",
+    tagline: "Tuition Marketplace & Mentorship Management Platform",
+    description:
+      "A tuition marketplace platform that connects students with tutors and provides separate dashboards and management features for students, tutors, and administrators.",
+    features: [
+      "Separate Student, Tutor, and Admin dashboards",
+      "Student and tutor account authentication",
+      "Tutor application and management system",
+      "Admin moderation and management features",
+      "User profile management and image upload",
+      "Responsive frontend and deployed backend",
+    ],
+    highlights: [
+      { label: "Core Stack", value: "Next.js 16, Express.js 5" },
+      { label: "Auth & DB", value: "Better Auth · MongoDB Atlas" },
+    ],
+    technologies: [
+      "Next.js 16",
+      "Express.js 5",
+      "Better Auth",
+      "MongoDB Atlas",
+      "Stripe",
+    ],
+    liveUrl: "https://mentor-lagbe-client-livid.vercel.app/",
+    image: "/projects/mentor-lagbe.png",
+    accentBg: "#e6eaf0",
+    pillBg: "#d5dde8",
+  },
 ];
 
 /**
@@ -127,18 +136,6 @@ export const showcaseCardsData = [
     badge: "01 / LIVE DEMO",
   },
   {
-    id: "card-fitlog-1",
-    projectId: "fitlog",
-    title: "FitLog",
-    subtitle: "Workout Logger · 2025",
-    status: "Live",
-    tech: "React · TypeScript",
-    url: "https://assingment-6-nine.vercel.app/",
-    image: "/projects/fitlog.png.png",
-    bg: "#f0ebe1",
-    badge: "02 / LIVE DEMO",
-  },
-  {
     id: "card-booknook-1",
     projectId: "booknook",
     title: "BookNook",
@@ -148,7 +145,7 @@ export const showcaseCardsData = [
     url: "https://book-nook-client-red.vercel.app/",
     image: "/projects/booknook.png.png",
     bg: "#e5e8f0",
-    badge: "03 / LIVE DEMO",
+    badge: "02 / LIVE DEMO",
   },
   {
     id: "card-dorbazar-1",
@@ -160,6 +157,18 @@ export const showcaseCardsData = [
     url: "https://dor-bazar.vercel.app/",
     image: "/projects/bazar-dor.png.png",
     bg: "#ece8e6",
+    badge: "03 / LIVE DEMO",
+  },
+  {
+    id: "card-mentorlagbe-1",
+    projectId: "mentor-lagbe",
+    title: "MentorLagbe",
+    subtitle: "Tuition Marketplace · 2026",
+    status: "Live",
+    tech: "Next.js 16 · Express · MongoDB",
+    url: "https://mentor-lagbe-client-livid.vercel.app/",
+    image: "/projects/mentor-lagbe.png",
+    bg: "#e8edf2",
     badge: "04 / LIVE DEMO",
   },
   {
@@ -175,18 +184,6 @@ export const showcaseCardsData = [
     badge: "01 / LIVE DEMO",
   },
   {
-    id: "card-fitlog-2",
-    projectId: "fitlog",
-    title: "FitLog",
-    subtitle: "Exercise Routines · 2025",
-    status: "Live",
-    tech: "TypeScript · Tailwind",
-    url: "https://assingment-6-nine.vercel.app/",
-    image: "/projects/fitlog.png.png",
-    bg: "#efeae4",
-    badge: "02 / LIVE DEMO",
-  },
-  {
     id: "card-booknook-2",
     projectId: "booknook",
     title: "BookNook",
@@ -196,7 +193,7 @@ export const showcaseCardsData = [
     url: "https://book-nook-client-red.vercel.app/",
     image: "/projects/booknook.png.png",
     bg: "#eae7ef",
-    badge: "03 / LIVE DEMO",
+    badge: "02 / LIVE DEMO",
   },
   {
     id: "card-dorbazar-2",
@@ -208,6 +205,18 @@ export const showcaseCardsData = [
     url: "https://dor-bazar.vercel.app/",
     image: "/projects/bazar-dor.png.png",
     bg: "#eae6df",
+    badge: "03 / LIVE DEMO",
+  },
+  {
+    id: "card-mentorlagbe-2",
+    projectId: "mentor-lagbe",
+    title: "MentorLagbe",
+    subtitle: "Mentorship Platform · 2026",
+    status: "Live",
+    tech: "Next.js 16 · Stripe · Auth",
+    url: "https://mentor-lagbe-client-livid.vercel.app/",
+    image: "/projects/mentor-lagbe.png",
+    bg: "#eaf0f5",
     badge: "04 / LIVE DEMO",
   },
 ];

@@ -508,26 +508,26 @@ export default function Navbar() {
                     </div>
                     <div className="flex items-center justify-between border-b border-white/10 pb-3">
                       <span className="text-sm font-semibold text-white">
-                        02. FitLog
+                        02. BookNook
                       </span>
                       <span className="text-[10px] font-mono text-white/50">
-                        React · TS
+                        Next.js · Express
                       </span>
                     </div>
                     <div className="flex items-center justify-between border-b border-white/10 pb-3">
                       <span className="text-sm font-semibold text-white">
-                        03. BookNook
+                        03. Dor Bazar
                       </span>
-                      <span className="text-[10px] font-mono text-white/70 border border-white/25 rounded-full px-2 py-0.5">
-                        In Progress
+                      <span className="text-[10px] font-mono text-white/50">
+                        Next.js · Tailwind
                       </span>
                     </div>
                     <div className="flex items-center justify-between pb-1">
                       <span className="text-sm font-semibold text-white">
-                        04. Dor Bazar
+                        04. MentorLagbe
                       </span>
                       <span className="text-[10px] font-mono text-white/50">
-                        Live Demo
+                        Full-Stack · Live
                       </span>
                     </div>
                   </div>
